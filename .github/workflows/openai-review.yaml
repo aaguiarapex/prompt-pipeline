@@ -32,7 +32,7 @@ jobs:
         fi
 
     - name: Subir artifact de revisión
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: csharp-review
         path: review.md
