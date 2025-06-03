@@ -24,8 +24,10 @@ jobs:
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
-    - name: Upload review artifact
-      uses: actions/upload-artifact@v3.1.3
-      with:
-        name: csharp-review
-        path: review.md
+    # - name: Upload review artifact
+    #   uses: actions/upload-artifact@v3.1.3
+    #   with:
+    #     name: csharp-review
+    #     path: review.md
+    - name: Mostrar Resultado
+      run: cat review.md
