@@ -1,19 +1,21 @@
-import openai
-from openai import AsyncOpenAI
 import os
+from openai import AsyncOpenAI
 
-# Leer el archivo de código C# (puedes agregar más lógica para múltiples archivos)
+# Leer el archivo de código C#
 with open("Program.cs", "r", encoding="utf-8") as f:
     code = f.read()
 
-async def get_completion(prompt, model="gpt-3.5-turbo", temperature=0):
+async def get_completion(client, prompt, model="gpt-3.5-turbo", temperature=0):
     messages = [{"role": "user", "content": prompt}]
     response = await client.chat.completions.create(
         model=model,
         messages=messages,
         temperature=temperature,
     )
-    return response.choices[0].message.content
+    return response.choices[0].message.content  # Correct response handling
+
+# Inicialización de cliente OpenAI
+client = AsyncOpenAI()
 
 # Prompt para revisión
 prompt = f"""
@@ -30,14 +32,13 @@ C# Code:
 {code}
 """
 
-client = AsyncOpenAI()
+# Llamar a la API y guardar la respuesta
+async def main():
+    response = await get_completion(client, prompt)
 
+    with open("review.md", "w", encoding="utf-8") as f:
+        f.write(response)  # Use the correct response format
 
-# Configuración API
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-response =  await get_completion(prompt)
-
-# Guardar la respuesta
-with open("review.md", "w", encoding="utf-8") as f:
-    f.write(response["choices"][0]["message"]["content"])
+# Ejecutar la función asíncrona
+import asyncio
+asyncio.run(main())
